@@ -1,0 +1,48 @@
+
+<html>
+    <head>
+        <title>Login to the Web News Application</title>
+    <body bgcolor="#E6E6FA">
+   	<center><h1>Welcome User</h1></center>
+    <font size="5">
+
+        <script language="javascript"> 
+            function toggle(id1,id2,text) {
+                var e1 = document.getElementById(id1);
+                var e2 = document.getElementById(id2);
+                if(e1.style.display == "block") {
+                    e1.style.display = "none";
+                    e2.innerHTML = text;
+                }
+                else {
+                    e1.style.display = "block";
+                    e2.innerHTML = "Hide Information";
+                }
+            } 
+        </script>
+
+        <center><a id="subscriberT" href="javascript:toggle('subscriberToggle','subscriberT','Login as Subscriber');">Login as Subscriber</a></center>
+        <div id="subscriberToggle" align="center" style="display: none">
+            <form method="post" action="controller">
+                <input type="hidden" name="action" value="subscriber_login"/>
+                Subscriber ID: <input type="text" name="subscriberid" size="25"/>
+                Password: <input type="password" name="passwd" size="25"/>
+                <input type="submit" value="Login"/>
+            </form>    
+        </div> 
+                
+        <br/>
+        
+        <center><a id="reporterT" align="center" href="javascript:toggle('reporterToggle','reporterT','Login as Reporter');">Login as Reporter</a></center>
+        <div id="reporterToggle" align="center" style="display: none">
+			<form method="post" action="controller">
+                <input type="hidden" name="action" value="reporter_login"/>
+                Reporter ID: <input type="text" name="reporterid" size="25"/>
+                Password: <input type="password" name="passwd" size="25"/>
+                <input type="submit" value="Login"/>
+            </form>    
+        </div>       
+
+		</font>
+    </body>
+</html>
