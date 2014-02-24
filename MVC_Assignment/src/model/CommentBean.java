@@ -1,4 +1,4 @@
-package edu.asupoly.ser422.lab4.model;
+package model;
 
 /**
  * 	An immutable object representing a comment on a news story

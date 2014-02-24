@@ -1,4 +1,4 @@
-package edu.asupoly.ser422.lab4.model;
+package model;
 
 import java.util.ArrayList;
 import java.util.Date;

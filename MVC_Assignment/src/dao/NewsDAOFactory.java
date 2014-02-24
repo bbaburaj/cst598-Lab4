@@ -1,4 +1,4 @@
-package edu.asupoly.ser422.lab4.dao;
+package dao;
 
 
 public final class NewsDAOFactory {

@@ -1,4 +1,6 @@
-package edu.asupoly.ser422.lab4.model;
+package model;
+
+
 
 public class UserBean {
 	public enum Role {

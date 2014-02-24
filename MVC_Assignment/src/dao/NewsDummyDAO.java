@@ -1,7 +1,7 @@
-package edu.asupoly.ser422.lab4.dao;
+package dao;
 
-import edu.asupoly.ser422.lab4.model.NewsItemBean;
-import edu.asupoly.ser422.lab4.model.UserBean;
+import model.NewsItemBean;
+import model.UserBean;
 
 public class NewsDummyDAO implements INewsDAO {
 
