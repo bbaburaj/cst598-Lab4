@@ -45,6 +45,10 @@
     <copy todir="${build.home}">
       <fileset dir="${resources.dir}" includes="*.html, *.jsp"/>
     </copy>
+  	<copy todir="${build.home}/resources">
+  	      <fileset dir="${files.dir}"/>
+  	</copy>
+  	<copy file="resources/login.txt" tofile="${build.home}/WEB-INF/classes/resources/login.txt"/>
     <copy file="web.xml" tofile="${build.home}/WEB-INF/web.xml"/>
   </target>
     

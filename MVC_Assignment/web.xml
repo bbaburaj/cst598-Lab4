@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-         version="2.4">
-         
-    <display-name>The Latest News</display-name>
-	
-    <servlet>
-        <servlet-name>SuccessViewServlet</servlet-name>
-        <servlet-class>edu.asupoly.ser422.mvchg.views.SuccessView</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ControllerServlet</servlet-name>
-        <servlet-class>edu.asupoly.ser422.mvchg.controller.ControllerServlet</servlet-class>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>ControllerServlet</servlet-name>
-        <url-pattern>/controller/*</url-pattern>
-    </servlet-mapping>
-   <servlet-mapping>
-        <servlet-name>SuccessViewServlet</servlet-name>
-        <url-pattern>/success</url-pattern>
-    </servlet-mapping>
-    
-    <welcome-file-list>
-        <welcome-file>login.html</welcome-file>
-    </welcome-file-list>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<display-name>The Latest News</display-name>
+	<servlet>
+		<servlet-name>NewsServlet</servlet-name>
+		<servlet-class>controller.NewsServlet</servlet-class>
+		<init-param>
+			<param-name>users_list</param-name>
+			<param-value>/resources/login.txt</param-value>
+		</init-param>
+		<init-param>
+			<param-name>news_list</param-name>
+			<param-value>/resources/news.txt</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>NewsServlet</servlet-name>
+		<url-pattern>/news/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
 
 </web-app>

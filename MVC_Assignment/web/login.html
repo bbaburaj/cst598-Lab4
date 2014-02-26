@@ -23,9 +23,10 @@
 
         <center><a id="subscriberT" href="javascript:toggle('subscriberToggle','subscriberT','Login as Subscriber');">Login as Subscriber</a></center>
         <div id="subscriberToggle" align="center" style="display: none">
-            <form method="post" action="controller">
-                <input type="hidden" name="action" value="subscriber_login"/>
-                Subscriber ID: <input type="text" name="subscriberid" size="25"/>
+            <form method="post" action="news">
+                <input type="hidden" name="action" value="validate"/>
+                <input type="hidden" name="login_type" value="Subscriber"/>
+                Subscriber ID: <input type="text" name="userid" size="25"/>
                 Password: <input type="password" name="passwd" size="25"/>
                 <input type="submit" value="Login"/>
             </form>    
@@ -35,9 +36,10 @@
         
         <center><a id="reporterT" align="center" href="javascript:toggle('reporterToggle','reporterT','Login as Reporter');">Login as Reporter</a></center>
         <div id="reporterToggle" align="center" style="display: none">
-			<form method="post" action="controller">
-                <input type="hidden" name="action" value="reporter_login"/>
-                Reporter ID: <input type="text" name="reporterid" size="25"/>
+			<form method="post" action="news">
+                <input type="hidden" name="action" value="validate"/>
+                <input type="hidden" name="login_type" value="Reporter"/>
+                Reporter ID: <input type="text" name="userid" size="25"/>
                 Password: <input type="password" name="passwd" size="25"/>
                 <input type="submit" value="Login"/>
             </form>    

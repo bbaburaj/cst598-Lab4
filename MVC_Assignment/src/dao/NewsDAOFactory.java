@@ -2,13 +2,13 @@ package dao;
 
 
 public final class NewsDAOFactory {
-	private static INewsDAO __theDAO = null;
+	private static NewsDAO __theDAO = null;
 	
 	private NewsDAOFactory() {}
 	
-	public static final INewsDAO getTheDAO() {
+	public static final NewsDAO getTheDAO() {
 		if (__theDAO == null) {
-			__theDAO = new NewsDummyDAO();
+			__theDAO = new NewsDAO();
 		}
 		return __theDAO;
 	}

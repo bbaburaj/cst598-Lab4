@@ -1,28 +1,26 @@
-<%@page import="edu.asupoly.ser422.lab4.model.UserBean"%>
-<%@page import="edu.asupoly.ser422.lab4.dao.*"%>
+<%@page import="model.UserBean"%>
+<%@page import="dao.*"%>
 <html>
 <head>
 </head>
 <body>
 <%
-String userId = null;
-String passwd = null;
+
 String msg = "";
-
-userId = request.getParameter("userid");
-passwd = request.getParameter("passwd");
-
+String userId = request.getParameter("userid");
+String passwd = request.getParameter("passwd");
+String role = request.getParameter("login_type");
 if (userId == null || userId.length() == 0 || passwd == null || passwd.length() == 0)
 	{	msg = "The userID or password cannot be empty";   }
 else if (!userId.equals(passwd))
 	{	msg = "The userID or password is not valid";   }
-// HERE YOU HAVE TO CHECK IF THE USER EXISTS OR NOT!
 else {
-	UserBean user = NewsDAOFactory.getTheDAO().getUser(userId);
+	UserBean user = NewsDAOFactory.getTheDAO().getUser(userId,role);
 	if (user == null) {
 		msg = "No such user " + userId;
+		response.sendRedirect("newUser.html");
 	} else {
-		msg = "Successful login, you are User " + user.toString();
+		msg = "Successful login, you are " + user.toString();
 	}
 }
 
