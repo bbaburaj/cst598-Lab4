@@ -16,20 +16,30 @@ import java.util.Map;
 import model.NewsItemBean;
 import model.UserBean;
 import model.UserBean.Role;
+import model.CommentBean;
 
 public class NewsDAO implements INewsDAO {
 	
 	public static Map<String, UserBean> userMap = new HashMap<String, UserBean>();	
+	public static Map<Integer, NewsItemBean> newsMap = new HashMap<Integer, NewsItemBean>();
+	
 	public static final String NEW_LINE = System.getProperty("line.separator");
+	
+	public NewsDAO() {
+		newsMap.put(1, new NewsItemBean(1, "News Example #1", "This is the body", "reporter1"));
+		newsMap.put(2, new NewsItemBean(2, "News Example #2", "This is the body", "reporter1"));
+		newsMap.put(3, new NewsItemBean(1, "Third", "This is the body", "reporter1"));
+		newsMap.put(4, new NewsItemBean(2, "Fourth", "This is the body", "reporter1"));
+	}
+	
 	@Override
 	public NewsItemBean[] getNews() {
-		NewsItemBean[] news = new NewsItemBean[10];
-		for (int i = 0; i < news.length; i++) {
-			news[i] = new NewsItemBean(i, "title"+i, "story"+i, "reporter"+i%3);
+		NewsItemBean newsItems[] = new NewsItemBean[newsMap.size()];
+		for (int i = 0; i < newsItems.length; i++) {
+			newsItems[i] = newsMap.get(i+1);
 		}
-		return news;
+		return newsItems;
 	}
-
 	@Override
 	public boolean createUser(UserBean user) {
 		return userMap.put(user.getUserId(), user) != null;
