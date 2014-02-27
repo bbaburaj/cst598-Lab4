@@ -29,22 +29,19 @@ public class NewsServlet extends HttpServlet {
 	private static Logger logger = Logger
 			.getLogger("controller.NavigatorServlet");
 	private static Map<String, String> pageViews = new HashMap<String, String>();
-	private static String news_file = null;
 	private static String user_file = null;
 
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);	
-		news_file = config.getInitParameter("news_list");
-		if (news_file == null || news_file.length() == 0) {
-			throw new ServletException();
-		}
 		user_file = config.getInitParameter("users_list");
 		if (user_file == null || user_file.length() == 0) {
 			throw new ServletException();
 		}
 		System.out.println("Loaded init param user info with " + user_file);
-		System.out.println("Loaded init param news info with " + news_file);
 		pageViews.put("validate", "/validateLogin.jsp");
+		pageViews.put("add", "/newUser.html");
+		pageViews.put("success", "/success");
+		pageViews.put("view", "/viewNews");
 	}
 
 	private void doAction(HttpServletRequest request,
@@ -64,7 +61,7 @@ public class NewsServlet extends HttpServlet {
 						response);
 			} else if(action.equals("new_user")){
 				String register = request.getParameter("register");
-				String id = request.getParameter("userid");
+				String id = session.getAttribute("userid").toString();
 				String role = request.getParameter("role");
 				if(register!=null && register.equals("yes")){
 					dao.createUser(new UserBean(id,id,UserBean.Role.valueOf(role)));
@@ -76,6 +73,9 @@ public class NewsServlet extends HttpServlet {
 				out.println("<P>User:"+id+" added to the site under the "+role+"</P>");
 				out.println("<P>Thanks for visiting the news site</P>");
 				out.println("</BODY></HTML>");
+			}else{
+				request.getRequestDispatcher(pageViews.get(action)).forward(request,
+						response);
 			}
 		}
 

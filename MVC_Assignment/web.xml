@@ -5,6 +5,15 @@
 	version="2.4">
 
 	<display-name>The Latest News</display-name>
+	
+	<servlet>
+		<servlet-name>SuccessView</servlet-name>
+		<servlet-class>views.SuccessView</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>NewsView</servlet-name>
+		<servlet-class>views.NewsView</servlet-class>
+	</servlet>
 	<servlet>
 		<servlet-name>NewsServlet</servlet-name>
 		<servlet-class>controller.NewsServlet</servlet-class>
@@ -12,16 +21,20 @@
 			<param-name>users_list</param-name>
 			<param-value>/resources/login.txt</param-value>
 		</init-param>
-		<init-param>
-			<param-name>news_list</param-name>
-			<param-value>/resources/news.txt</param-value>
-		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>NewsServlet</servlet-name>
 		<url-pattern>/news/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>NewsView</servlet-name>
+		<url-pattern>/viewNews/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SuccessView</servlet-name>
+		<url-pattern>/success/*</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>

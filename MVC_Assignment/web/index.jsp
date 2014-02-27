@@ -1,4 +1,5 @@
-
+<html>
+<body bgcolor="#E6E6FA"/>
 <h2>NEW News</h2>
 <p>NEW news is a news resource about NEW stuff.</p>
 <p>

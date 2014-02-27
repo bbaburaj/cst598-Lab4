@@ -20,6 +20,7 @@
       <!-- Make sure you set your classpath! -->
       <classpath>
         <fileset dir="${tomcat.home}/lib" includes="servlet-api.jar"/>
+      	<fileset dir="${lib.dir}" includes="*.jar"/>
         <pathelement path="${classes.dir}" />
       </classpath>
     </javac>
@@ -40,7 +41,7 @@
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/WEB-INF"/>
     <copy todir="${build.home}/WEB-INF">
-      <fileset dir="." includes="${classes.dir}/**"/>
+      <fileset dir="." includes="${classes.dir}/**,${lib.dir}/**"/>
     </copy>
     <copy todir="${build.home}">
       <fileset dir="${resources.dir}" includes="*.html, *.jsp"/>
