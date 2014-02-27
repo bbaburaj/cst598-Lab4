@@ -64,15 +64,15 @@ public class NewsServlet extends HttpServlet {
 				String id = session.getAttribute("userid").toString();
 				String role = request.getParameter("role");
 				if(register!=null && register.equals("yes")){
-					dao.createUser(new UserBean(id,id,UserBean.Role.valueOf(role)));
+					UserBean user = new UserBean(id,id,UserBean.Role.valueOf(role));
+					dao.createUser(user);
+					session.setAttribute("user", user);
 				}
 				String realPath = sc.getRealPath("/");
 				realPath = realPath.concat(user_file.substring(1));
 				dao.updateStudentFile(realPath);
-				out.println("<HTML><BODY>");
-				out.println("<P>User:"+id+" added to the site under the "+role+"</P>");
-				out.println("<P>Thanks for visiting the news site</P>");
-				out.println("</BODY></HTML>");
+				request.getRequestDispatcher("/success").forward(request,
+						response);
 			}else{
 				request.getRequestDispatcher(pageViews.get(action)).forward(request,
 						response);
