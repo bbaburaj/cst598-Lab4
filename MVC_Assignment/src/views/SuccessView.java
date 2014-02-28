@@ -39,6 +39,7 @@ public class SuccessView extends HttpServlet {
 					out.write("<tr>");
 					out.write("<td><a href=\"./about.html\">About</a></td>");
 					out.write("<td><a href=\"./news?action=view\">View News</a></td>");
+					out.write("<td><a href=\"./add\">Add News</a></td>");
 					out.write("</tr>");
 					out.write("</table>");
 					out.write("</body>\r\n");
