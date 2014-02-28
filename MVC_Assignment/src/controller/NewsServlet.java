@@ -42,6 +42,7 @@ public class NewsServlet extends HttpServlet {
 		pageViews.put("Edit", "/edit");
 		pageViews.put("Delete", "/delete");
 		pageViews.put("confirm", "/confirm.jsp");
+		pageViews.put("addNews", "/add");
 	}
 
 	private void doAction(HttpServletRequest request,
@@ -87,6 +88,9 @@ public class NewsServlet extends HttpServlet {
 				dao.deleteNewsItem(newsToDelete.getItemId());
 				action = "confirm";
 				session.setAttribute("newsToDelete", null);
+			} else if (action.equals("addNews")) {
+				dao.createNewsItem(new NewsItemBean(request.getParameter("newsTitle"), request.getParameter("newsBody"), "test"), request.getParameter("user"));
+				action = "success";
 			}
 			String forwardPage = pageViews.get(action);
 			request.getRequestDispatcher(forwardPage)

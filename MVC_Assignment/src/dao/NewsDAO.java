@@ -26,17 +26,17 @@ public class NewsDAO implements INewsDAO {
 	public static final String NEW_LINE = System.getProperty("line.separator");
 	
 	public NewsDAO() {
-		newsMap.put(1, new NewsItemBean(1, "Reporter News 1", "This is the body-1", "reporter1"));
-		newsMap.put(2, new NewsItemBean(2, "Reporter News 2", "This is the body-2", "reporter1"));
-		newsMap.put(3, new NewsItemBean(3, "Reporter News 3", "This is the body-3", "reporter1"));
-		newsMap.put(4, new NewsItemBean(4, "Reporter News 4", "This is the body-4", "reporter1"));
-		newsMap.put(5, new NewsItemBean(5, "Reporter News 5", "This is the body-5", "reporter2"));
-		newsMap.put(6, new NewsItemBean(6, "Reporter News 6", "This is the body-6", "reporter3"));
-		newsMap.put(7, new NewsItemBean(7, "Reporter News 7", "This is the body--7", "reporter4"));
-		newsMap.put(8, new NewsItemBean(8, "Public1", "This is the body-public1", "public"));
-		newsMap.put(9, new NewsItemBean(9, "Public2", "This is the body-public2", "public"));
-		newsMap.put(10, new NewsItemBean(10, "Public3", "This is the body-public3", "public"));
-		newsMap.put(11, new NewsItemBean(11, "Public4", "This is the body-public4", "public"));
+		createNewsItem(new NewsItemBean("Reporter News 1", "This is the body-1", "reporter1"), "jbranger");
+		createNewsItem(new NewsItemBean("Reporter News 2", "This is the body-2", "reporter1"), "jbranger");
+		createNewsItem(new NewsItemBean("Reporter News 3", "This is the body-3", "reporter1"), "jbranger");
+		createNewsItem(new NewsItemBean("Reporter News 4", "This is the body-4", "reporter1"), "jbranger");
+		createNewsItem(new NewsItemBean("Reporter News 5", "This is the body-5", "reporter2"), "jbranger");
+		createNewsItem(new NewsItemBean("Reporter News 6", "This is the body-6", "reporter3"), "jbranger");
+		createNewsItem(new NewsItemBean("Reporter News 7", "This is the body-7", "reporter4"), "jbranger");
+		createNewsItem(new NewsItemBean("Public News 1", "This is the body-1", "public"), "jbranger");
+		createNewsItem(new NewsItemBean("Public News 2", "This is the body-2", "public"), "jbranger");
+		createNewsItem(new NewsItemBean("Public News 3", "This is the body-3", "public"), "jbranger");
+		createNewsItem(new NewsItemBean("Public News 4", "This is the body-4", "public"), "jbranger");
 	}
 	
 	@Override
@@ -74,7 +74,8 @@ public class NewsDAO implements INewsDAO {
 
 	@Override
 	public boolean createNewsItem(NewsItemBean nib, String userid) {
-		return Math.random() > 0.1;
+		newsMap.put(nib.getItemId(), nib);
+		return true;
 	}
 
 	@Override
