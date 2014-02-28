@@ -31,7 +31,7 @@ public class SuccessView extends HttpServlet {
 				UserBean user = (UserBean) session.getAttribute("user");
 				if (user != null) {
 					out.write("\r\n");
-					out.write("<h2>Welcome "+user.getUserId()+"! you are now logged in to to NEW News</h2>\r\n");
+					out.write("<h2>Welcome "+user.getUserId()+"! you are now logged in to NEW News</h2>\r\n");
 					out.write("<p>NEW news is a news resource about NEW stuff.</p>");
 					out.write("<p> NEW news is a fictional organization managing fictional news items for a non-fictional web programming class.</p>");
 					out.write("<br/>");

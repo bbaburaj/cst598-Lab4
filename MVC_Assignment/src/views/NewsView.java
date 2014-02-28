@@ -1,7 +1,12 @@
 package views;
 
-
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,19 +18,21 @@ import model.UserBean;
 import dao.NewsDAO;
 import dao.NewsDAOFactory;
 
-public class NewsView extends HttpServlet{
-	public void service(HttpServletRequest request, HttpServletResponse response){
+public class NewsView extends HttpServlet {
+	public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		NewsDAO dao = (NewsDAO) NewsDAOFactory.getTheDAO();
 		NewsItemBean[] news = dao.getNews();
-		HttpSession session = request.getSession(false); 
+		HttpSession session = request.getSession(false);
 		PrintWriter out = null;
+		List<NewsItemBean> mutableNews = new ArrayList<NewsItemBean>();
 		try {
-			response.setContentType("text/html");		
+			response.setContentType("text/html");
 			out = response.getWriter();
 			out.write("<html>\r\n");
 			out.write("<head>\r\n");
 			out.write("<title>View News</title>\r\n");
 			out.write("</head>\r\n");
+			
 			if (session != null) {
 				out.write("<body bgcolor=\"#E6E6FA\">\r\n");
 				UserBean user = (UserBean) session.getAttribute("user");
@@ -43,24 +50,51 @@ public class NewsView extends HttpServlet{
 				out.write("    }");
 				out.write("} ");
 				out.write("</script>");
-				if (user != null) {
-					out.write("\r\n");
-					out.write("<h1 align=center> The latest news </h1>");
-					for (int i =0;i<news.length;i++){
-						NewsItemBean it = news[i];
-						out.write("<a id=\""+it.getItemTitle()+"\" href=\"javascript:toggle('"+it.getItemStory()+"','"+it.getItemTitle()+"','"+it.getItemTitle()+"');\">"+it.getItemTitle()+"</a></center>");
+				out.write("\r\n");
+				out.write("<h1 align=center> The latest news </h1>");
+				for (int i = 0; i < news.length; i++) {
+					NewsItemBean it = news[i];
+					if(it == null) continue;
+					String itemTitle = it.getItemTitle();
+					String itemStory = it.getItemStory();
+					String itemReporter = it.getReporterId();
+					
+					boolean canEdit = user != null && (user.getRole().equals(
+							UserBean.Role.REPORTER)) && !itemReporter.equals("public");
+					if (itemReporter.equals("public")
+							|| (user != null && (user.getRole().equals(
+									UserBean.Role.SUBSCRIBER) || itemReporter
+									.equals(user.getUserId())))) {
+						out.write("<a id=\"" + itemTitle
+								+ "\" href=\"javascript:toggle('" + itemStory
+								+ "','" + itemTitle + "','" + itemTitle
+								+ "');\">" + itemTitle + "</a></center>");
 						out.write("\r\n");
-						out.write("<div id=\""+it.getItemStory()+"\" style=\"display: none\">");
+						out.write("<div id=\"" + itemStory
+								+ "\" style=\"display: none\">");
 						out.write("\r\n");
-						out.write(it.getItemTitle()+" "+it.getItemStory());
-						out.write("<p></p>");
-						out.write("</div><br>");
+						out.write(itemTitle + " " + itemStory);
+						if(canEdit){
+							mutableNews.add(it);
+							out.write("<form method=\"post\" action=\"news\">");
+							out.write("<input type =\"hidden\" name=\"action\" value=\"edit\"/>");
+							out.write("<input type =\"hidden\" name=\"itemId\" value="+it.getItemId()+">");
+							out.write("<input type=\"submit\" name=\"editOrDelete\" value=\"Edit\"/>");
+							out.write("<input type=\"submit\" name=\"editOrDelete\" value=\"Delete\"/>");
+							out.write("</form>");
 						}
+						
+						out.write("</div><br>");
+						out.write("<br>");
 					}
-				out.write("</body></html>");
-				}out.close();
-			}catch(Exception e){
-				
+				}
+				session.setAttribute("mutableNews", mutableNews);
 			}
+			out.write("</body></html>");
+
+			out.close();
+		} catch (Exception e) {
+
+		}
 	}
 }

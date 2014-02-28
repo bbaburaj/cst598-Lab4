@@ -13,5 +13,8 @@ NEW news is a fictional organization managing fictional news items
 <tr>
 <td><a href="./about.html">About</a></td>
 <td><a href="./login.html">Login</a></td>
+<td><a href="<%=request.getContextPath()%>/news?action=view">View News</a></td>
 </tr>
 </table>
+</body>
+</html>
