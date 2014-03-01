@@ -31,8 +31,7 @@ public class AddView extends HttpServlet {
 			if (session != null) {
 				UserBean user = (UserBean) session.getAttribute("user");
 				if ((user != null)
-						&& ((user.getRole().equals(UserBean.Role.REPORTER)) || (user
-								.getRole().equals(UserBean.Role.SUBSCRIBER)))) {
+						&& ((user.getRole().equals(UserBean.Role.REPORTER)))) {
 					out.write("<h2>Add News</h2>");
 					out.write("<FORM ACTION=\"news\" METHOD=\"post\">");
 					out.write("<input type=\"hidden\" name=\"action\" value=\"addNews\"/>");
