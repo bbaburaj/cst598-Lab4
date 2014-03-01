@@ -52,6 +52,7 @@ public class NewsView extends HttpServlet {
 				out.write("</script>");
 				out.write("\r\n");
 				out.write("<h1 align=center> The latest news </h1>");
+				out.write("<a href=\"./add\">Add News</a><br>");
 				for (int i = 0; i < news.length; i++) {
 					NewsItemBean it = news[i];
 					if(it == null) continue;

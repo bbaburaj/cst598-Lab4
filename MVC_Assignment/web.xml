@@ -19,6 +19,10 @@
 		<servlet-class>views.DeleteView</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>LogoutView</servlet-name>
+		<servlet-class>views.LogoutView</servlet-class>
+	</servlet>	
+	<servlet>
 		<servlet-name>NewsView</servlet-name>
 		<servlet-class>views.NewsView</servlet-class>
 	</servlet>
@@ -56,9 +60,13 @@
 		<servlet-name>DeleteView</servlet-name>
 		<url-pattern>/delete/*</url-pattern>
 	</servlet-mapping>
-		<servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>AddView</servlet-name>
 		<url-pattern>/add/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LogoutView</servlet-name>
+		<url-pattern>/logout/*</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

@@ -41,6 +41,8 @@ public class NewsServlet extends HttpServlet {
 		pageViews.put("Delete", "/delete");
 		pageViews.put("confirm", "/confirm.jsp");
 		pageViews.put("addNews", "/add");
+		pageViews.put("logout", "/logout");
+		pageViews.put("home", "/index.jsp");
 	}
 
 	private void doAction(HttpServletRequest request,
@@ -90,6 +92,10 @@ public class NewsServlet extends HttpServlet {
 				UserBean user = (UserBean) session.getAttribute("user");
 				dao.createNewsItem(new NewsItemBean(request.getParameter("newsTitle"), request.getParameter("newsBody"), user.getUserId()), user.getUserId());
 				action = "success";
+			} else if(action.equals("logout")){
+				if(request.getParameter("logout").equals("No")){
+					action="home";
+				}
 			}
 			String forwardPage = pageViews.get(action);
 			request.getRequestDispatcher(forwardPage)

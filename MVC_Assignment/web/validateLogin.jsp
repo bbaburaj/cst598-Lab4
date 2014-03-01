@@ -25,7 +25,7 @@ else {
 		response.sendRedirect(request.getContextPath()+"/news?action=success");
 	}
 }
-
+out.println("<p>Login result " + msg + "</p>");
 %>
 <br/>
 
