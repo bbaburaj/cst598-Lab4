@@ -2,11 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -89,7 +87,8 @@ public class NewsServlet extends HttpServlet {
 				action = "confirm";
 				session.setAttribute("newsToDelete", null);
 			} else if (action.equals("addNews")) {
-				dao.createNewsItem(new NewsItemBean(request.getParameter("newsTitle"), request.getParameter("newsBody"), "test"), request.getParameter("user"));
+				UserBean user = (UserBean) session.getAttribute("user");
+				dao.createNewsItem(new NewsItemBean(request.getParameter("newsTitle"), request.getParameter("newsBody"), user.getUserId()), user.getUserId());
 				action = "success";
 			}
 			String forwardPage = pageViews.get(action);
