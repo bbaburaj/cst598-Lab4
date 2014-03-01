@@ -26,24 +26,24 @@ public class NewsDAO implements INewsDAO {
 	public static final String NEW_LINE = System.getProperty("line.separator");
 	
 	public NewsDAO() {
-		createNewsItem(new NewsItemBean("Reporter News 1", "This is the body-1", "reporter1"), "jbranger");
-		createNewsItem(new NewsItemBean("Reporter News 2", "This is the body-2", "reporter1"), "jbranger");
-		createNewsItem(new NewsItemBean("Reporter News 3", "This is the body-3", "reporter1"), "jbranger");
-		createNewsItem(new NewsItemBean("Reporter News 4", "This is the body-4", "reporter1"), "jbranger");
-		createNewsItem(new NewsItemBean("Reporter News 5", "This is the body-5", "reporter2"), "jbranger");
-		createNewsItem(new NewsItemBean("Reporter News 6", "This is the body-6", "reporter3"), "jbranger");
-		createNewsItem(new NewsItemBean("Reporter News 7", "This is the body-7", "reporter4"), "jbranger");
-		createNewsItem(new NewsItemBean("Public News 1", "This is the body-1", "public"), "jbranger");
-		createNewsItem(new NewsItemBean("Public News 2", "This is the body-2", "public"), "jbranger");
-		createNewsItem(new NewsItemBean("Public News 3", "This is the body-3", "public"), "jbranger");
-		createNewsItem(new NewsItemBean("Public News 4", "This is the body-4", "public"), "jbranger");
+		createNewsItem(new NewsItemBean("Reporter News 1", "This is the body-1", "reporter1"), "reporter1");
+		createNewsItem(new NewsItemBean("Reporter News 2", "This is the body-2", "reporter1"), "reporter1");
+		createNewsItem(new NewsItemBean("Reporter News 3", "This is the body-3", "reporter1"), "reporter1");
+		createNewsItem(new NewsItemBean("Reporter News 4", "This is the body-4", "reporter1"), "reporter1");
+		createNewsItem(new NewsItemBean("Reporter News 5", "This is the body-5", "reporter2"), "reporter2");
+		createNewsItem(new NewsItemBean("Reporter News 6", "This is the body-6", "reporter3"), "reporter3");
+		createNewsItem(new NewsItemBean("Reporter News 7", "This is the body-7", "reporter4"), "reporter4");
+		createNewsItem(new NewsItemBean("Public News 1", "This is the public body-1", "public"), "public");
+		createNewsItem(new NewsItemBean("Public News 2", "This is the public body-2", "public"), "public");
+		createNewsItem(new NewsItemBean("Public News 3", "This is the public body-3", "public"), "public");
+		createNewsItem(new NewsItemBean("Public News 4", "This is the public body-4", "public"), "public");
 	}
 	
 	@Override
 	public NewsItemBean[] getNews() {
 		NewsItemBean newsItems[] = new NewsItemBean[newsMap.size()];
 		for (int i = 0; i < newsItems.length; i++) {
-			System.out.println(newsMap.get(i+1));
+			System.out.println(newsMap.get(i+1).getItemTitle());
 			newsItems[i] = newsMap.get(i+1);
 		}
 		return newsItems;
