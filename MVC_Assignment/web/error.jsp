@@ -9,6 +9,6 @@
 <br>
 <br>
 An error occurred while processing your request: perhaps you entered
-the incorrect password. Try <a href="login.html">again</a>?
+the incorrect password. Ensure user name is not empty. Try <a href="login.html">again</a>?
 </body>
 </html>

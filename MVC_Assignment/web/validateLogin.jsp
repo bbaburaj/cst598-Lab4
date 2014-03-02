@@ -3,7 +3,7 @@
 <html>
 <head>
 </head>
-<body>
+<body bgcolor="#E6E6FA">
 <%
 
 String msg = "";
@@ -11,10 +11,8 @@ String userId = request.getParameter("userid");
 String passwd = request.getParameter("passwd");
 String role = request.getParameter("login_type");
 String action = "";
-if (userId == null || userId.length() == 0 || passwd == null || passwd.length() == 0)
-	{	msg = "The userID or password cannot be empty";   }
-else if (!userId.equals(passwd))
-	{	msg = "The userID or password is not valid";   }
+if (userId == null || userId.length() == 0 || passwd == null || passwd.length() == 0 || !userId.equals(passwd))
+	{response.sendRedirect(request.getContextPath()+"/news?action=error");}
 else {
 	UserBean user = NewsDAOFactory.getTheDAO().getUser(userId,role);
 	if (user == null) {
@@ -25,7 +23,7 @@ else {
 		response.sendRedirect(request.getContextPath()+"/news?action=success");
 	}
 }
-out.println("<p>Login result " + msg + "</p>");
+
 %>
 <br/>
 
