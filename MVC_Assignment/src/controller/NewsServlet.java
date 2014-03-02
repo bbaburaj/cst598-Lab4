@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import model.NewsItemBean;
 import model.UserBean;
+import model.UserBean.Role;
 import dao.NewsDAO;
 import dao.NewsDAOFactory;
 
@@ -43,6 +44,7 @@ public class NewsServlet extends HttpServlet {
 		pageViews.put("addNews", "/add");
 		pageViews.put("logout", "/logout");
 		pageViews.put("home", "/index.jsp");
+		pageViews.put("Add Comment" , "/edit");
 	}
 
 	private void doAction(HttpServletRequest request,
@@ -95,6 +97,17 @@ public class NewsServlet extends HttpServlet {
 			} else if(action.equals("logout")){
 				if(request.getParameter("logout").equals("No")){
 					action="home";
+				}
+			} else if(action.equals("becomeSubscriber")){
+				if(request.getParameter("subscriber").equals("No")){
+					action="home";
+				}else{
+					String id = request.getParameter("userId");
+					UserBean user = new UserBean(id, id,
+							Role.SUBSCRIBER);
+					dao.createUser(user);
+					session.setAttribute("user", user);
+					action="success";
 				}
 			}
 			String forwardPage = pageViews.get(action);

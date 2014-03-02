@@ -9,19 +9,18 @@ NEW news is a fictional organization managing fictional news items
 </p>
 <pre>
 </pre>
+<table border="0">
+<tr>
 <%
   UserBean user = (UserBean)session.getAttribute("user");
   String msg = "";
   if(user!=null){
-  	msg = "Logged in as <b>"+user.getUserId()+"</b>\r\n<td><a href=\"./logout.jsp\">Logout</a></td>";
+  	msg = "<td>Logged in as <b>"+user.getUserId()+"</b>\r\n<td><a href=\"./logout.jsp\">Logout</a></td>";
   } else{
   	msg="<td><a href=\"./login.html\">Login</a></td>";
   }
   out.println("<br>"+msg+"</br>");
  %>
-<br/>
-<table border="0">
-<tr>
 <td><a href="./about.html">About</a></td>
 <td><a href="<%=request.getContextPath()%>/news?action=view">View News</a></td>
 </tr>

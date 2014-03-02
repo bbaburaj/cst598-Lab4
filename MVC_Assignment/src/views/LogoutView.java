@@ -2,6 +2,7 @@ package views;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,11 @@ public class LogoutView extends HttpServlet {
 			out.write("<tr>");
 			out.write("<td><a href=\""+request.getContextPath()+"/login.html\"> Click here to login </a></td>");
 			out.write("<td><a href=\""+request.getContextPath()+"/index.jsp\">Home </a></td>");
-			session.setAttribute("user", null);
+			Enumeration<String> enumerator = session.getAttributeNames();
+			while(enumerator.hasMoreElements()){
+				session.setAttribute(enumerator.nextElement(), null);
+			}
+			
 	}
 
 

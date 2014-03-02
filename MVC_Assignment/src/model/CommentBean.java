@@ -12,6 +12,8 @@ public class CommentBean {
 	
 	public CommentBean(NewsItemBean nib, String userid, String comment) {
 		newsItemId = nib.getItemId();
+		this.userId = userid;
+		this.comment = comment;
 		nib.addComment(this);
 	}
 

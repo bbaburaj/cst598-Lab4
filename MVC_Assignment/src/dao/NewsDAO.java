@@ -43,7 +43,6 @@ public class NewsDAO implements INewsDAO {
 	public NewsItemBean[] getNews() {
 		NewsItemBean newsItems[] = new NewsItemBean[newsMap.size()];
 		for (int i = 0; i < newsItems.length; i++) {
-			System.out.println(newsMap.get(i+1).getItemTitle());
 			newsItems[i] = newsMap.get(i+1);
 		}
 		return newsItems;
@@ -60,7 +59,6 @@ public class NewsDAO implements INewsDAO {
 	
 	public UserBean getUser(String userId, String role){
 		UserBean u = getUser(userId);
-		System.out.println("["+u+"]"+role);
 		if(u!=null && u.getRole().toString().equals(role)){
 			return u;
 		}
@@ -69,7 +67,11 @@ public class NewsDAO implements INewsDAO {
 
 	@Override
 	public boolean storeComment(int newsItemId, String userid, String comment) {
-		return Math.random() > 0.1;
+		NewsItemBean news = newsMap.get(newsItemId);
+		if(comment!=null && comment.length()>0){
+			new CommentBean(news, userid, comment);
+		}
+		return true;
 	}
 
 	@Override
@@ -94,8 +96,6 @@ public class NewsDAO implements INewsDAO {
 
 	@Override
 	public boolean deleteNewsItem(int newsItemId) {
-		System.out.println("delete news item:"+newsItemId);
-		System.out.println("delete news item:"+newsMap.get(newsItemId));
 		newsMap.put(newsItemId, null);
 		return Math.random() > 0.1;
 	}
