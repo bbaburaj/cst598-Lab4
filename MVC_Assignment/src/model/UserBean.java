@@ -1,8 +1,8 @@
 package model;
 
+public class UserBean implements java.io.Serializable {
+	private static final long serialVersionUID = -1408433159918540612L;
 
-
-public class UserBean {
 	public enum Role {
 	    GUEST, SUBSCRIBER, REPORTER;
 	    
@@ -25,7 +25,7 @@ public class UserBean {
 		this.passwd = passwd;
 		this.role = r;
 	}
-	protected UserBean(UserBean user, Role newRole) {
+	public UserBean(UserBean user, Role newRole) {
 		this.userId = user.userId;
 		this.passwd = user.passwd;
 		this.role = newRole;
@@ -46,4 +46,10 @@ public class UserBean {
 	public String toString() {
 		return "User " + userId + " of Role " + role.toString();
 	}
+	
+	@Override
+	public Object clone() {
+		return new UserBean(this, this.role);
+	}
+
 }

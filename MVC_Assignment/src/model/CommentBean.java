@@ -5,7 +5,9 @@ package model;
  * @author kevinagary
  *
  */
-public class CommentBean {
+public class CommentBean implements java.io.Serializable {
+	private static final long serialVersionUID = 8241629811258814033L;
+	
 	private String userId;
 	private String comment;
 	private int newsItemId;
@@ -16,7 +18,12 @@ public class CommentBean {
 		this.comment = comment;
 		nib.addComment(this);
 	}
-
+	@SuppressWarnings("unused")
+	private CommentBean(int nid, String userid, String comment) {
+		newsItemId = nid;
+		this.userId = userid;
+		this.comment = comment;
+	}
 	public String getUserId() {
 		return userId;
 	}

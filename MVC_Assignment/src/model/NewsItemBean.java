@@ -3,7 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class NewsItemBean {
+public class NewsItemBean implements java.io.Serializable {
+	private static final long serialVersionUID = 4760114651123862127L;
+
 	private static int nextId = 1;
 	
 	private int itemId;
