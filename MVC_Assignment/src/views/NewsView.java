@@ -20,11 +20,16 @@ import dao.NewsDAOFactory;
 public class NewsView extends HttpServlet {
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		NewsDAO dao = (NewsDAO) NewsDAOFactory.getTheDAO();
-		NewsItemBean[] news = dao.getNews();
 		HttpSession session = request.getSession(false);
+		NewsItemBean[] news = (NewsItemBean[]) session.getAttribute("news");
+		boolean[] canEdit = (boolean[]) session.getAttribute("canEdit");
+		boolean[] canComment = (boolean[]) session.getAttribute("canComment");
+		boolean[] canView = (boolean[]) session.getAttribute("canView");
+		boolean[] isPublic = (boolean[]) session.getAttribute("isPublic");
+		@SuppressWarnings("unchecked")
+		List<CommentBean[]> comments = (List<CommentBean[]>) session
+				.getAttribute("comments");
 		PrintWriter out = null;
-		List<NewsItemBean> mutableNews = new ArrayList<NewsItemBean>();
 		try {
 			response.setContentType("text/html");
 			out = response.getWriter();
@@ -56,7 +61,7 @@ public class NewsView extends HttpServlet {
 				out.write("<a href=\"./add\">Add News</a><br>");
 				out.write("<a href=\"" + request.getContextPath()
 						+ "/logout.jsp\">Logout </a><br>");
-				if(user==null){
+				if (user == null) {
 					out.write("<a href=\"" + request.getContextPath()
 							+ "/subscriber.jsp\">Become a subscriber </a>");
 				}
@@ -68,21 +73,8 @@ public class NewsView extends HttpServlet {
 						continue;
 					String itemTitle = it.getItemTitle();
 					String itemStory = it.getItemStory();
-					String itemReporter = it.getReporterId();
-
-					Role role = Role.GUEST;
-					String userId = "";
-					if (user != null) {
-						role = user.getRole();
-						userId = user.getUserId();
-					}
-
-					boolean canComment = (role == Role.SUBSCRIBER)
-							|| (itemReporter.equals(userId));
-					boolean canEdit = user != null && (!(role == Role.GUEST));
-					if (itemReporter.equals("public")
-							|| (user != null && ((role == Role.SUBSCRIBER) || itemReporter
-									.equals(userId)))) {
+					int itemId = it.getItemId();
+					if (canView[i]) {
 						out.write("<a id=\"" + itemTitle
 								+ "\" href=\"javascript:toggle('" + itemStory
 								+ "','" + itemTitle + "','" + itemTitle
@@ -92,35 +84,34 @@ public class NewsView extends HttpServlet {
 								+ "\" style=\"display: none\">");
 						out.write("\r\n");
 						out.write(itemStory);
-						if (canEdit) {
-							mutableNews.add(it);
-							out.write("<form method=\"post\" action=\"news\">");
-							out.write("<input type =\"hidden\" name=\"action\" value=\"edit\"/>");
-							out.write("<input type =\"hidden\" name=\"itemId\" value="
-									+ it.getItemId() + ">");
-							if (!itemReporter.equals("public")) {
+						out.write("<form method=\"post\" action=\"news\">");
+						out.write("<input type =\"hidden\" name=\"action\" value=\"edit\"/>");
+						out.write("<input type=\"submit\" name=\"favorite\" value=\"Mark As Favorite\"/>");
+						out.write("<input type =\"hidden\" name=\"itemId\" value="
+								+ itemId + ">");
+						if (canEdit[i]) {
+							if (isPublic[i]) {
 								out.write("<input type=\"submit\" name=\"editOrDelete\" value=\"Edit\"/>");
 								out.write("<input type=\"submit\" name=\"editOrDelete\" value=\"Delete\"/>");
 							}
-
-							out.write("<h4>Comments</h4>");
-							CommentBean[] comments = it.getComments();
-							for (CommentBean cmt : comments) {
-								out.write("<h4>" + cmt.getComment() +" by "+cmt.getUserId()+"</h4>");
-							}
-
-							if (canComment) {
-								out.write("<input type=\"text\" id=\"newsComment\" name=\"newsComment\"/>");
-								out.write("<input type=\"submit\" name=\"editOrDelete\" value=\"Add Comment\"/>");
-							}
-							out.write("</form>");
 						}
+						out.write("<h4>Comments</h4>");
+						CommentBean[] storyComment = comments.get(i);
+						for (CommentBean cmt : storyComment) {
+							out.write("<h4>" + cmt.getComment() + " by "
+									+ cmt.getUserId() + "</h4>");
+						}
+
+						if (canComment[i]) {
+							out.write("<input type=\"text\" id=\"newsComment\" name=\"newsComment\"/>");
+							out.write("<input type=\"submit\" name=\"editOrDelete\" value=\"Add Comment\"/>");
+						}
+						out.write("</form>");
 
 						out.write("</div><br>");
 						out.write("<br>");
 					}
 				}
-				session.setAttribute("mutableNews", mutableNews);
 			}
 			out.write("</body></html>");
 

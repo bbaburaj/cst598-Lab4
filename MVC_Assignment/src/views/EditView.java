@@ -17,8 +17,9 @@ public class EditView extends HttpServlet{
 		HttpSession session = request.getSession(false);
 		NewsDAO dao = (NewsDAO) NewsDAOFactory.getTheDAO();
 		List<NewsItemBean> newsArray = (List<NewsItemBean>) session.getAttribute("mutableNews");
-		int mutableNewsId = Integer.parseInt(request.getParameter("itemId"));
-		boolean addComment = !request.getParameter("editOrDelete").equals("Edit");
+		int mutableNewsId = (int) session.getAttribute("mutableNewsId");
+		boolean addComment = (boolean) session.getAttribute("canComment");
+		System.out.println(session.getAttribute("canComment")+" "+newsArray);
 		String comment = request.getParameter("newsComment");
 		for(NewsItemBean news:newsArray){
 			if(news.getItemId() == mutableNewsId){
@@ -32,7 +33,6 @@ public class EditView extends HttpServlet{
 	}
 	
 	private void commentNews(HttpServletResponse response, NewsItemBean news,NewsDAO dao, String comment){
-		dao.storeComment(news.getItemId(), news.getReporterId(), comment);
 		PrintWriter out = null;
 		try {
 			response.setContentType("text/html");
@@ -64,7 +64,6 @@ public class EditView extends HttpServlet{
 			out.write("<body bgcolor=\"#E6E6FA\">\r\n");
 			out.write("<form method=\"post\" action=\"news\">");
 			out.write("<input type=\"hidden\" name=\"action\" value=\"editPage\"");
-			session.setAttribute("newsToEdit", news);
 			out.write("<h2> Edit Story </h2>");
 			out.write("<input type=\"text\" name=\"newsTitle\" value=\""+news.getItemTitle()+"\"/>");
 			out.write("<br>");

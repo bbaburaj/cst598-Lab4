@@ -19,11 +19,14 @@ import model.UserBean;
 import model.UserBean.Role;
 import dao.NewsDAO;
 import dao.NewsDAOFactory;
+import handler.*;
 
 public class NewsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private static String errorPage = "error.jsp";
 	private static Map<String, String> pageViews = new HashMap<String, String>();
+    private static Map<String, ActionHandler> handlers = new HashMap<String, ActionHandler>();
 	private static String user_file = null;
 
 	public void init(ServletConfig config) throws ServletException {
@@ -32,7 +35,30 @@ public class NewsServlet extends HttpServlet {
 		if (user_file == null || user_file.length() == 0) {
 			throw new ServletException();
 		}
+		
 		System.out.println("Loaded init param user info with " + user_file);
+		handlers.put("validate", new LoginHandler());
+		handlers.put("new_user", new NewUserHandler());
+		handlers.put("view", new ViewNewsHandler());
+		handlers.put("logout", new LogoutHandler());
+		handlers.put("becomeSubscriber", new SubscriberHandler());
+		handlers.put("success", new ActionHandler() {
+			public String handleIt(Map<String, String[]> params, HttpSession s) {
+				return "success";
+			}
+		});
+		handlers.put("add", new ActionHandler() {
+			public String handleIt(Map<String, String[]> params, HttpSession s) {
+				return "add";
+			}
+		});
+		handlers.put("Add Comment", new ActionHandler() {
+			public String handleIt(Map<String, String[]> params, HttpSession s) {
+				return "Add Comment";
+			}
+		});
+		handlers.put("edit", new EditDeleteCommentHandler());
+		handlers.put("editPage", new EditHandler());
 		pageViews.put("validate", "/validateLogin.jsp");
 		pageViews.put("add", "/newUser.html");
 		pageViews.put("success", "/success");
@@ -46,76 +72,30 @@ public class NewsServlet extends HttpServlet {
 		pageViews.put("home", "/index.jsp");
 		pageViews.put("Add Comment" , "/edit");
 	}
-
-	private void doAction(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException,
-			URISyntaxException {
+	
+    private void doAction(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		String forwardPage = errorPage;
+		Map<String, String[]> params = request.getParameterMap();
 		String action = request.getParameter("action");
-		ServletContext sc = getServletContext();
-		InputStream is = sc.getResourceAsStream(user_file);
-		NewsDAO dao = (NewsDAO) NewsDAOFactory.getTheDAO();
-		NewsItemBean newsToEdit = (NewsItemBean) session
-				.getAttribute("newsToEdit");
-		NewsItemBean newsToDelete = (NewsItemBean) session
-				.getAttribute("newsToDelete");
-		
+		session.setAttribute("userfile", user_file);
 		if (action != null && action.length() > 0) {
-			if (action.equals("validate")) {
-				dao.getDataFromResource(is);
-			} else if (action.equals("new_user")) {
-				String register = request.getParameter("register");
-				String id = session.getAttribute("userid").toString();
-				String role = request.getParameter("role");
-				action = "fail";
-				if (register != null && register.equals("yes")) {
-					UserBean user = new UserBean(id, id,
-							UserBean.Role.valueOf(role));
-					dao.createUser(user);
-					session.setAttribute("user", user);
-					action = "success";
+			// Forward to web application to page indicated by action
+			ActionHandler handler = handlers.get(action);
+			if (handler != null) {
+				String result = handler.handleIt(params, session);
+				System.out.println("["+result+"]");
+				if (result != null && result.length() > 0) {
+					forwardPage = pageViews.get(result);
 				}
-				String realPath = sc.getRealPath("/");
-				realPath = realPath.concat(user_file.substring(1));
-				dao.updateStudentFile(realPath);
-			} else if (action.equals("edit")) {
-				action = request.getParameter("editOrDelete");
-			} else if (newsToEdit != null) {
-				String newStory = request.getParameter("newsStory");
-				String newTitle = request.getParameter("newsTitle");
-				dao.updateNewsItem(newsToEdit.getItemId(), newTitle, newStory);
-				action = "confirm";
-				session.setAttribute("newsToEdit", null);
-			} else if (newsToDelete != null && request.getParameter("delete").equals("Yes")) {
-				dao.deleteNewsItem(newsToDelete.getItemId());
-				action = "confirm";
-				session.setAttribute("newsToDelete", null);
-			} else if (action.equals("addNews")) {
-				UserBean user = (UserBean) session.getAttribute("user");
-				dao.createNewsItem(new NewsItemBean(request.getParameter("newsTitle"), request.getParameter("newsBody"), user.getUserId()), user.getUserId());
-				action = "success";
-			} else if(action.equals("logout")){
-				if(request.getParameter("logout").equals("No")){
-					action="home";
-				}
-			} else if(action.equals("becomeSubscriber")){
-				if(request.getParameter("subscriber").equals("No")){
-					action="home";
-				}else{
-					String id = request.getParameter("userId");
-					UserBean user = new UserBean(id, id,
-							Role.SUBSCRIBER);
-					dao.createUser(user);
-					session.setAttribute("user", user);
-					action="success";
+				if (forwardPage == null || forwardPage.length() == 0) {
+					forwardPage = errorPage;
 				}
 			}
-			String forwardPage = pageViews.get(action);
-			request.getRequestDispatcher(forwardPage)
-					.forward(request, response);
 		}
-
-	}
+		request.getRequestDispatcher(forwardPage).forward(request, response);
+}
 
 	/**
 	 * Handle forms
@@ -130,12 +110,8 @@ public class NewsServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
 			doAction(request, response);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 
 	/**
@@ -150,11 +126,6 @@ public class NewsServlet extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			doAction(request, response);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		doAction(request, response);
 	}
 }

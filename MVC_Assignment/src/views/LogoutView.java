@@ -27,12 +27,7 @@ public class LogoutView extends HttpServlet {
 			out.write("<table border=\"0\">");
 			out.write("<tr>");
 			out.write("<td><a href=\""+request.getContextPath()+"/login.html\"> Click here to login </a></td>");
-			out.write("<td><a href=\""+request.getContextPath()+"/index.jsp\">Home </a></td>");
-			Enumeration<String> enumerator = session.getAttributeNames();
-			while(enumerator.hasMoreElements()){
-				session.setAttribute(enumerator.nextElement(), null);
-			}
-			
+			out.write("<td><a href=\""+request.getContextPath()+"/index.jsp\">Home </a></td>");			
 	}
 
 

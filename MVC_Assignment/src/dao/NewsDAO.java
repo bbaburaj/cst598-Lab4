@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-
 
 import model.NewsItemBean;
 import model.UserBean;
@@ -22,6 +23,7 @@ public class NewsDAO implements INewsDAO {
 	
 	public static Map<String, UserBean> userMap = new HashMap<String, UserBean>();	
 	public static Map<Integer, NewsItemBean> newsMap = new HashMap<Integer, NewsItemBean>();
+	public static Map<String, List<NewsItemBean>> favorites = new HashMap<String,  List<NewsItemBean>>();
 	
 	public static final String NEW_LINE = System.getProperty("line.separator");
 	
@@ -134,6 +136,20 @@ public class NewsDAO implements INewsDAO {
 			System.out.println("Error processing user entries");
 			throw new IOException("Failed to process login.txt");
 		}
+	}
+
+	@Override
+	public boolean addFavorites(NewsItemBean nib, UserBean user) {
+		if(user == null){
+			// The user is a guest. Hence cookies would be set.
+			
+		}else{
+			String userId = user.getUserId();
+			List<NewsItemBean> favList = (favorites.get(userId) == null)?new ArrayList<NewsItemBean>():favorites.get(userId);
+			favList.add(nib);
+			favorites.put(userId, favList);
+		}
+		return false;
 	}
 
 }

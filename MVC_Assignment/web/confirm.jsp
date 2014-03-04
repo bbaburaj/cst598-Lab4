@@ -6,7 +6,7 @@
 <br/>
 <table border="0">
 <tr>
-<td><a href="<%=request.getContextPath()%>/viewNews">View News</a></td>
+<td><a href="<%=request.getContextPath()%>/news?action=view">View News</a></td>
 </tr>
 </table>
 </body>
