@@ -18,7 +18,7 @@ public class NewUserHandler implements ActionHandler{
 			throws IOException {
 		ServletContext sc = session.getServletContext();
 		NewsDAO dao = (NewsDAO) NewsDAOFactory.getTheDAO();
-		String user_file = (String)session.getAttribute("userFile");
+		String user_file = (String)session.getAttribute("userfile");
 		String register =((String[]) params.get("register"))[0];
 		String id = session.getAttribute("userid").toString();
 		String role = ((String[]) params.get("role"))[0];

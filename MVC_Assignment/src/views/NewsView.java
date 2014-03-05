@@ -61,7 +61,7 @@ public class NewsView extends HttpServlet {
 				out.write("<h1 align=center> The latest news </h1>");
 				out.write("<div align=\"right\">");
 				out.write("<a href=\"./add\">Add News</a><br>");
-				out.write("<a href=\"" + request.getContextPath()
+				if(user!=null)out.write("<a href=\"" + request.getContextPath()
 						+ "/logout.jsp\">Logout </a><br>");
 				if (user == null) {
 					out.write("<a href=\"" + request.getContextPath()
