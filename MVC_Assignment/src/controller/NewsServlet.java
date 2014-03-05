@@ -42,6 +42,7 @@ public class NewsServlet extends HttpServlet {
 		handlers.put("view", new ViewNewsHandler());
 		handlers.put("logout", new LogoutHandler());
 		handlers.put("becomeSubscriber", new SubscriberHandler());
+		handlers.put("addNews", new AddNewsHandler());
 		handlers.put("success", new ActionHandler() {
 			public String handleIt(Map<String, String[]> params, HttpSession s) {
 				return "success";
