@@ -25,7 +25,6 @@ public String handleIt(Map<String, String[]> params, HttpSession session)
 	String editOrDelete = (editDeleteParam == null)?"":editDeleteParam[0];
 	String[] favParam = ((String[]) params.get("favorite"));
 	String favorite = (favParam == null)?"":favParam[0];
-	System.out.println("Fav::"+favorite);
 	boolean edit = editOrDelete.equals("Edit");
 	boolean delete = editOrDelete.equals("Delete");
 	boolean canComment = !(edit||delete);
@@ -36,10 +35,9 @@ public String handleIt(Map<String, String[]> params, HttpSession session)
 	String comment = (comments!=null)?comments[0]:"";
 	for(NewsItemBean news:newsArray){
 		if(news.getItemId() == mutableNewsId){
-			System.out.println("Inside");
 			if(markFavorite){
 				dao.addFavorites(news, user);
-				action = "confirm";
+				action = "fav";
 			}else if(canComment){
 				dao.storeComment(news.getItemId(), user.getUserId(), comment);
 			}else if(edit){

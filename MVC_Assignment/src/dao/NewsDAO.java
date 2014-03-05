@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
 import model.NewsItemBean;
 import model.UserBean;
 import model.UserBean.Role;
@@ -139,9 +140,9 @@ public class NewsDAO implements INewsDAO {
 	}
 
 	@Override
-	public boolean addFavorites(NewsItemBean nib, UserBean user) {
+	public void addFavorites(NewsItemBean nib, UserBean user) {
 		if(user == null){
-			// The user is a guest. Hence cookies would be set.
+			
 			
 		}else{
 			String userId = user.getUserId();
@@ -149,7 +150,12 @@ public class NewsDAO implements INewsDAO {
 			favList.add(nib);
 			favorites.put(userId, favList);
 		}
-		return false;
+	}
+
+	@Override
+	public List<NewsItemBean> getFavorites(String userId) {
+		List<NewsItemBean> fav = favorites.get(userId);
+		return (fav!=null)?fav:new ArrayList<NewsItemBean>();
 	}
 
 }

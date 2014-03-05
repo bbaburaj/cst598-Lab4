@@ -19,7 +19,6 @@ public class EditView extends HttpServlet{
 		List<NewsItemBean> newsArray = (List<NewsItemBean>) session.getAttribute("mutableNews");
 		int mutableNewsId = (int) session.getAttribute("mutableNewsId");
 		boolean addComment = (boolean) session.getAttribute("canComment");
-		System.out.println(session.getAttribute("canComment")+" "+newsArray);
 		String comment = request.getParameter("newsComment");
 		for(NewsItemBean news:newsArray){
 			if(news.getItemId() == mutableNewsId){

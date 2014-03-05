@@ -71,6 +71,7 @@ public class NewsServlet extends HttpServlet {
 		pageViews.put("logout", "/logout");
 		pageViews.put("home", "/index.jsp");
 		pageViews.put("Add Comment" , "/edit");
+		pageViews.put("fav", "/favoritesAdded.jsp");
 	}
 	
     private void doAction(HttpServletRequest request, HttpServletResponse response)
@@ -85,7 +86,6 @@ public class NewsServlet extends HttpServlet {
 			ActionHandler handler = handlers.get(action);
 			if (handler != null) {
 				String result = handler.handleIt(params, session);
-				System.out.println("["+result+"]");
 				if (result != null && result.length() > 0) {
 					forwardPage = pageViews.get(result);
 				}
