@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 import model.NewsItemBean;
 import model.UserBean;
 import model.UserBean.Role;
@@ -157,6 +156,21 @@ public class NewsDAO implements INewsDAO {
 	public List<NewsItemBean> getFavorites(String userId) {
 		List<NewsItemBean> fav = favorites.get(userId);
 		return (fav!=null)?fav:new ArrayList<NewsItemBean>();
+	}
+
+	@Override
+	public void deleteFavorite(NewsItemBean nib, UserBean user, String guid) {
+		if(user == null){
+			List<NewsItemBean> favList = (favorites.get(guid) == null)?new ArrayList<NewsItemBean>():favorites.get(guid);
+			favList.remove(nib);
+			favorites.put(guid, favList);
+		}else{
+			String userId = user.getUserId();
+			List<NewsItemBean> favList = (favorites.get(userId) == null)?new ArrayList<NewsItemBean>():favorites.get(userId);
+			favList.remove(nib);
+			favorites.put(userId, favList);
+		}
+		
 	}
 
 }

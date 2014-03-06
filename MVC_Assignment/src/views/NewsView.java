@@ -95,6 +95,8 @@ public class NewsView extends HttpServlet {
 							+ itemId + ">");
 					if (!favorites.contains(news[i]))
 						out.write("<input type=\"submit\" name=\"favorite\" value=\"Mark As Favorite\"/>");
+					else
+						out.write("<input type=\"submit\" name=\"favorite\" value=\"Delete From Favorites\"/>");
 					out.write("</form>");
 					out.write("<form method=\"post\" action=\"news\">");
 					out.write("<input type =\"hidden\" name=\"action\" value=\"edit\"/>");

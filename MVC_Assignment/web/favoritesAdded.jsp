@@ -1,6 +1,6 @@
 <html>
 <body bgcolor="#E6E6FA"/>
-<h2> Favorites Added </h2>
+<h2> Favorites Updated </h2>
 <pre>
 </pre>
 <br/>

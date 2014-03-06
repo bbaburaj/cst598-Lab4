@@ -106,7 +106,6 @@ public class NewsServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-			response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 			doAction(request, response);
 		
 	}
@@ -124,7 +123,6 @@ public class NewsServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		doAction(request, response);
 	}
 }

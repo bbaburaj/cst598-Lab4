@@ -32,6 +32,9 @@ public class FavoriteHandler implements ActionHandler{
 				if(markFavorite){
 					dao.addFavorites(n, user, ViewNewsHandler.guestId);
 					action = "fav";
+				}else{
+					dao.deleteFavorite(n,user, ViewNewsHandler.guestId);
+					action = "fav";
 				}
 			}
 		}

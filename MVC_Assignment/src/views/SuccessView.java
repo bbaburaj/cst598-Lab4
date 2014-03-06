@@ -29,7 +29,7 @@ public class SuccessView extends HttpServlet {
 			if (session != null) {
 				out.write("<body bgcolor=\"#E6E6FA\">\r\n");
 				UserBean user = (UserBean) session.getAttribute("user");
-				boolean canAddNews = (boolean)session.getAttribute("canAddNews");
+				boolean canAddNews = (session.getAttribute("canAddNews")==null)?false:(boolean)session.getAttribute("canAddNews");
 				if (user != null) {
 					out.write("\r\n");
 					out.write("<h2>Welcome "+user.getUserId()+"! you are now logged in to NEW News</h2>\r\n");
@@ -54,7 +54,10 @@ public class SuccessView extends HttpServlet {
 			} else {
 				out.write("No valid conversation exists between client and server");
 			}
-		} finally {
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		finally {
 			if (out != null) {
 				out.close();
 				out = null;
