@@ -25,12 +25,9 @@ public String handleIt(Map<String, String[]> params, HttpSession session, HttpSe
 	int mutableNewsId = Integer.parseInt(((String[]) params.get("itemId"))[0]);
 	String[] editDeleteParam = ((String[]) params.get("editOrDelete"));
 	String editOrDelete = (editDeleteParam == null)?"":editDeleteParam[0];
-	String[] favParam = ((String[]) params.get("favorite"));
-	String favorite = (favParam == null)?"":favParam[0];
 	boolean edit = editOrDelete.equals("Edit");
 	boolean delete = editOrDelete.equals("Delete");
 	boolean canComment = !(edit||delete);
-	boolean markFavorite = (favorite.equals("Mark As Favorite"));
 	String action =editOrDelete;
 	List<NewsItemBean> newsArray = (List<NewsItemBean>) session.getAttribute("mutableNews");
 	String[] comments = ((String[]) params.get("newsComment"));

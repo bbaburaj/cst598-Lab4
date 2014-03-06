@@ -99,6 +99,8 @@ public class NewsView extends HttpServlet {
 						out.write("<input type=\"submit\" name=\"favorite\" value=\"Delete From Favorites\"/>");
 					out.write("</form>");
 					out.write("<form method=\"post\" action=\"news\">");
+					out.write("<input type =\"hidden\" name=\"itemId\" value="
+							+ itemId + ">");
 					out.write("<input type =\"hidden\" name=\"action\" value=\"edit\"/>");
 					if (canEdit[i]) {
 						if (isPublic[i]) {

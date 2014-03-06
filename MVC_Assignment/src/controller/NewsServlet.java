@@ -55,6 +55,7 @@ public class NewsServlet extends HttpServlet {
 		handlers.put("edit", new EditDeleteCommentHandler());
 		handlers.put("editPage", new EditHandler());
 		handlers.put("fav", new FavoriteHandler());
+		handlers.put("deletePage", new DeleteHandler());
 		pageViews.put("validate", "/validateLogin.jsp");
 		pageViews.put("add", "/newUser.html");
 		pageViews.put("success", "/success");
