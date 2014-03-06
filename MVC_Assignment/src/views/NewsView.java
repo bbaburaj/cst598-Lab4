@@ -25,7 +25,7 @@ public class NewsView extends HttpServlet {
 		boolean[] canEdit = (boolean[]) session.getAttribute("canEdit");
 		boolean[] canComment = (boolean[]) session.getAttribute("canComment");
 		boolean[] isPublic = (boolean[]) session.getAttribute("isPublic");
-
+		boolean canAddNews = (boolean)session.getAttribute("canAddNews");
 		@SuppressWarnings("unchecked")
 		List<CommentBean[]> comments = (List<CommentBean[]>) session
 				.getAttribute("comments");
@@ -60,16 +60,17 @@ public class NewsView extends HttpServlet {
 				out.write("\r\n");
 				out.write("<h1 align=center> The latest news </h1>");
 				out.write("<div align=\"right\">");
-
+				out.write("<a href=\"" + request.getContextPath()
+						+ "/index.jsp\">Home</a><br>");
 				if (user != null) {
 					out.write("<a href=\"" + request.getContextPath()
 							+ "/logout.jsp\">Logout </a><br>");
-					out.write("<a href=\"./add\">Add News</a><br>");
-				}
-				if (user == null) {
+					
+				}else{
 					out.write("<a href=\"" + request.getContextPath()
 							+ "/subscriber.jsp\">Become a subscriber </a>");
 				}
+				if(canAddNews)out.write("<a href=\"./add\">Add News</a><br>");
 				out.write("</div>");
 				for (int i = 0; i < news.length; i++) {
 
@@ -89,11 +90,14 @@ public class NewsView extends HttpServlet {
 					out.write("\r\n");
 					out.write(itemStory);
 					out.write("<form method=\"post\" action=\"news\">");
-					out.write("<input type =\"hidden\" name=\"action\" value=\"edit\"/>");
-					if (!favorites.contains(news[i]))
-						out.write("<input type=\"submit\" name=\"favorite\" value=\"Mark As Favorite\"/>");
+					out.write("<input type =\"hidden\" name=\"action\" value=\"fav\"/>");
 					out.write("<input type =\"hidden\" name=\"itemId\" value="
 							+ itemId + ">");
+					if (!favorites.contains(news[i]))
+						out.write("<input type=\"submit\" name=\"favorite\" value=\"Mark As Favorite\"/>");
+					out.write("</form>");
+					out.write("<form method=\"post\" action=\"news\">");
+					out.write("<input type =\"hidden\" name=\"action\" value=\"edit\"/>");
 					if (canEdit[i]) {
 						if (isPublic[i]) {
 							out.write("<input type=\"submit\" name=\"editOrDelete\" value=\"Edit\"/>");

@@ -14,6 +14,6 @@ public interface INewsDAO {
 	public NewsItemBean getNewsItem(int newsItemId);
 	public boolean updateNewsItem(int newsItemId, String newTitle, String newStory);
 	public boolean deleteNewsItem(int newsItemId);	
-	public void addFavorites(NewsItemBean nib, UserBean user);
+	public void addFavorites(NewsItemBean nib, UserBean user, String guid);
 	public List<NewsItemBean> getFavorites(String userId);
 }

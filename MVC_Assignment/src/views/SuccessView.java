@@ -29,6 +29,7 @@ public class SuccessView extends HttpServlet {
 			if (session != null) {
 				out.write("<body bgcolor=\"#E6E6FA\">\r\n");
 				UserBean user = (UserBean) session.getAttribute("user");
+				boolean canAddNews = (boolean)session.getAttribute("canAddNews");
 				if (user != null) {
 					out.write("\r\n");
 					out.write("<h2>Welcome "+user.getUserId()+"! you are now logged in to NEW News</h2>\r\n");
@@ -39,7 +40,7 @@ public class SuccessView extends HttpServlet {
 					out.write("<tr>");
 					out.write("<td><a href=\"./about.html\">About</a></td>");
 					out.write("<td><a href=\"./news?action=view\">View News</a></td>");
-					out.write("<td><a href=\"./add\">Add News</a></td>");
+					if(canAddNews)out.write("<td><a href=\"./add\">Add News</a></td>");
 					out.write("<td><a href=\""+request.getContextPath()+"/index.jsp\">Home </a></td>");
 					out.write("<td><a href=\""+request.getContextPath()+"/logout.jsp\">Logout </a></td>");
 					out.write("</tr>");

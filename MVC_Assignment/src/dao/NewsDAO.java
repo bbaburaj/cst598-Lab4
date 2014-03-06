@@ -140,10 +140,11 @@ public class NewsDAO implements INewsDAO {
 	}
 
 	@Override
-	public void addFavorites(NewsItemBean nib, UserBean user) {
+	public void addFavorites(NewsItemBean nib, UserBean user, String guid) {
 		if(user == null){
-			
-			
+			List<NewsItemBean> favList = (favorites.get(guid) == null)?new ArrayList<NewsItemBean>():favorites.get(guid);
+			favList.add(nib);
+			favorites.put(guid, favList);
 		}else{
 			String userId = user.getUserId();
 			List<NewsItemBean> favList = (favorites.get(userId) == null)?new ArrayList<NewsItemBean>():favorites.get(userId);

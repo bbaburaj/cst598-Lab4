@@ -1,24 +1,18 @@
 package controller;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import model.NewsItemBean;
-import model.UserBean;
-import model.UserBean.Role;
-import dao.NewsDAO;
-import dao.NewsDAOFactory;
 import handler.*;
 
 public class NewsServlet extends HttpServlet {
@@ -44,22 +38,23 @@ public class NewsServlet extends HttpServlet {
 		handlers.put("becomeSubscriber", new SubscriberHandler());
 		handlers.put("addNews", new AddNewsHandler());
 		handlers.put("success", new ActionHandler() {
-			public String handleIt(Map<String, String[]> params, HttpSession s) {
+			public String handleIt(Map<String, String[]> params, HttpSession s, HttpServletRequest request, HttpServletResponse response) {
 				return "success";
 			}
 		});
 		handlers.put("add", new ActionHandler() {
-			public String handleIt(Map<String, String[]> params, HttpSession s) {
+			public String handleIt(Map<String, String[]> params, HttpSession s, HttpServletRequest request, HttpServletResponse response) {
 				return "add";
 			}
 		});
 		handlers.put("Add Comment", new ActionHandler() {
-			public String handleIt(Map<String, String[]> params, HttpSession s) {
+			public String handleIt(Map<String, String[]> params, HttpSession s, HttpServletRequest request, HttpServletResponse response) {
 				return "Add Comment";
 			}
 		});
 		handlers.put("edit", new EditDeleteCommentHandler());
 		handlers.put("editPage", new EditHandler());
+		handlers.put("fav", new FavoriteHandler());
 		pageViews.put("validate", "/validateLogin.jsp");
 		pageViews.put("add", "/newUser.html");
 		pageViews.put("success", "/success");
@@ -86,7 +81,7 @@ public class NewsServlet extends HttpServlet {
 			// Forward to web application to page indicated by action
 			ActionHandler handler = handlers.get(action);
 			if (handler != null) {
-				String result = handler.handleIt(params, session);
+				String result = handler.handleIt(params, session, request, response);
 				if (result != null && result.length() > 0) {
 					forwardPage = pageViews.get(result);
 				}
@@ -111,6 +106,7 @@ public class NewsServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+			response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 			doAction(request, response);
 		
 	}
@@ -127,6 +123,8 @@ public class NewsServlet extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		doAction(request, response);
 	}
 }
