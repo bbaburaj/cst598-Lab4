@@ -20,8 +20,9 @@ public class AddNewsHandler implements ActionHandler {
 		NewsDAO dao = (NewsDAO) NewsDAOFactory.getTheDAO();
 		UserBean user = (UserBean) session.getAttribute("user");
 		boolean isPublic = params.get("newsType")[0].equals("public");
-		String userId = (isPublic)?"public":user.getUserId();
-		dao.createNewsItem(new NewsItemBean(params.get("newsTitle")[0], params.get("newsBody")[0], userId), user.getUserId());getClass();
+		String id=user.getUserId();;
+		String userId = (isPublic)?"publicRep"+id:id;
+		dao.createNewsItem(new NewsItemBean(params.get("newsTitle")[0], params.get("newsBody")[0], userId), user.getUserId());
 		return "success";
 	}
 

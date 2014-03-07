@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import model.CommentBean;
 import model.NewsItemBean;
 import model.UserBean;
@@ -34,10 +36,15 @@ public class ViewNewsHandler implements ActionHandler {
 		boolean[] canComment = new boolean[news.length];
 		boolean[] canView = new boolean[news.length];
 		boolean[] isPublicNews = new boolean[news.length];
+		boolean[] canEditSorted = new boolean[news.length];
+		boolean[] canCommentSorted = new boolean[news.length];
+		boolean[] isPublicNewsSorted = new boolean[news.length];
 		boolean isReporter = false;
 		List<CommentBean[]> comments =  new ArrayList<CommentBean[]>();
+		List<CommentBean[]> commentsSorted =  new ArrayList<CommentBean[]>();
 		List<NewsItemBean> favorites = new ArrayList<NewsItemBean>();
 		List<NewsItemBean> notFavorite = new ArrayList<NewsItemBean>();
+		
 		if(user == null){
 			guestId = processCookie(request, "guestId");
 			if (guestId == null) {
@@ -64,37 +71,51 @@ public class ViewNewsHandler implements ActionHandler {
 				role = user.getRole();
 				userId = user.getUserId();
 			}
+			
 			canComment[i] = (role == Role.SUBSCRIBER)
-					|| (itemReporter.equals(userId));
-			canEdit[i] = user != null && (role == Role.REPORTER) && itemReporter.equals(userId);
-			canView[i] = itemReporter.equals("public")
+					|| (itemReporter.equals(userId)) || itemReporter.equals("publicRep"+userId);
+			canEdit[i] = user != null && (role == Role.REPORTER) && (itemReporter.equals(userId) || itemReporter.equals("publicRep"+userId));
+			canView[i] = itemReporter.equals("public") || itemReporter.contains("publicRep")
 					|| (user != null && ((role == Role.SUBSCRIBER) || itemReporter
-							.equals(userId)));
-			if(!favorites.contains(news[i]) && canView[i]){
-				notFavorite.add(news[i]);
-			}
+							.equals(userId) || itemReporter.equals("publicRep"+userId)));
 			isPublicNews[i] = !itemReporter.equals("public");
 			comments.add(it.getComments());
 				if (canEdit[i] || canComment[i]) {
 					mutableNews.add(it);
 				}
+			if(!favorites.contains(news[i]) && canView[i]){
+					notFavorite.add(news[i]);
+				}
 			
 		}
 		NewsItemBean[] sortedNews = new NewsItemBean[news.length];
 		for(int i=0;i<favorites.size();i++){
-			sortedNews[i] = favorites.get(i);
+			NewsItemBean newsItemBean = favorites.get(i);
+			int position = Arrays.asList(news).indexOf(newsItemBean);
+			sortedNews[i] = newsItemBean;
+			canEditSorted[i] =  canEdit[position];
+			canCommentSorted[i] = canComment[position];
+			isPublicNewsSorted[i] = isPublicNews[position];
+			commentsSorted.add(newsItemBean.getComments());
 		}
 		int size = favorites.size();
 		for(int j=0;j<notFavorite.size();j++){
-			sortedNews[size] = notFavorite.get(j);
+			NewsItemBean newsItemBean = notFavorite.get(j);
+			int position = Arrays.asList(news).indexOf(newsItemBean);
+			sortedNews[size] = newsItemBean;
+			
+			canEditSorted[size] =  canEdit[position];
+			canCommentSorted[size] = canComment[position];
+			isPublicNewsSorted[size] = isPublicNews[position];
+			commentsSorted.add(newsItemBean.getComments());
 			size++;
 		}
-		session.setAttribute("canEdit",canEdit);
-		session.setAttribute("canComment", canComment);
+		session.setAttribute("canEdit",canEditSorted);
+		session.setAttribute("canComment", canCommentSorted);
 		session.setAttribute("mutableNews", mutableNews);
 		session.setAttribute("news", sortedNews);
-		session.setAttribute("isPublic", isPublicNews);
-		session.setAttribute("comments", comments);
+		session.setAttribute("isPublic", isPublicNewsSorted);
+		session.setAttribute("comments", commentsSorted);
 		session.setAttribute("favorites", favorites);
 		session.setAttribute("canAddNews", isReporter);
 		return "view";
